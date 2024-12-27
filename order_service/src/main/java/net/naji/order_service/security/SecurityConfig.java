@@ -1,4 +1,4 @@
-package net.naji.inventoryservice.security;
+package net.naji.order_service.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +18,9 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    private JwtAuthConverter jwtAuthConverter;
+    private net.naji.order_service.security.JwtAuthConverter jwtAuthConverter;
 
-    public SecurityConfig(JwtAuthConverter jwtAuthConverter) {
+    public SecurityConfig(net.naji.order_service.security.JwtAuthConverter jwtAuthConverter) {
         this.jwtAuthConverter = jwtAuthConverter;
     }
 
@@ -31,7 +31,7 @@ public class SecurityConfig {
                  .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                  .csrf(csrf->csrf.disable())
                  .headers(h ->h.frameOptions(fo->fo.disable()) )
-                 .authorizeHttpRequests(ar ->ar.requestMatchers("/h2-console/**").permitAll())
+                 .authorizeHttpRequests(ar ->ar.requestMatchers("/h2-console/**","/swagger-ui.html","/v3/**","/swagger-ui/**").permitAll())
                 //.authorizeHttpRequests(ar ->ar.requestMatchers("/api/products/**").hasAnyAuthority("ADMIN"))
                  .authorizeHttpRequests(ar -> ar.anyRequest().authenticated())
                  .oauth2ResourceServer(o2->o2.jwt(jwt->jwt.jwtAuthenticationConverter(jwtAuthConverter)))
